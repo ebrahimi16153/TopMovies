@@ -6,8 +6,10 @@ import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -22,10 +24,12 @@ import com.github.ebrahimi16153.topmovies.ui.screens.Favorite
 import com.github.ebrahimi16153.topmovies.ui.screens.Home
 import com.github.ebrahimi16153.topmovies.ui.screens.Search
 import com.github.ebrahimi16153.topmovies.ui.screens.Splash
+import com.github.ebrahimi16153.topmovies.viewModel.HomeViewModel
 
 @Composable
 fun MainScaffold(
-    navController: NavHostController
+    navController: NavHostController,
+    homeViewModel: HomeViewModel
 ) {
 
     val navBarVisibility = remember {
@@ -77,7 +81,7 @@ fun MainScaffold(
 
                 //  home
                 composable(ScreenRoute.Home.name) {
-                    Home(navHostController = navController)
+                    Home(navHostController = navController,homeViewModel = homeViewModel)
                 }
 
                 // search
@@ -106,7 +110,7 @@ fun MainScaffold(
 @Composable
 fun BottomBar(navController: NavHostController, currentDestination: String) {
 
-    NavigationBar {
+    NavigationBar(containerColor = MaterialTheme.colorScheme.secondary) {
         NavigationBarItem(selected = currentDestination == "Home", onClick = {
             navController.navigate(ScreenRoute.Home.name)
 
@@ -117,7 +121,7 @@ fun BottomBar(navController: NavHostController, currentDestination: String) {
             )
         }, label = {
             Text(text = "Home")
-        })
+        }, colors = NavigationBarItemDefaults.colors(selectedIconColor = MaterialTheme.colorScheme.primary, selectedTextColor = MaterialTheme.colorScheme.primary))
 
         NavigationBarItem(selected = currentDestination == ScreenRoute.Search.name, onClick = {
 
@@ -130,7 +134,7 @@ fun BottomBar(navController: NavHostController, currentDestination: String) {
             )
         }, label = {
             Text(text = "Search")
-        })
+        },colors = NavigationBarItemDefaults.colors(selectedIconColor = MaterialTheme.colorScheme.primary, selectedTextColor = MaterialTheme.colorScheme.primary))
 
         NavigationBarItem(selected = currentDestination == ScreenRoute.Favorite.name, onClick = {
 
@@ -144,7 +148,7 @@ fun BottomBar(navController: NavHostController, currentDestination: String) {
             )
         }, label = {
             Text(text = "Favorite")
-        })
+        },colors = NavigationBarItemDefaults.colors(selectedIconColor = MaterialTheme.colorScheme.primary, selectedTextColor = MaterialTheme.colorScheme.primary))
 
     }
 
