@@ -9,12 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 
 @Composable
-fun Home(navHostController: NavHostController){
+fun Favorite(navHostController: NavHostController) {
 
-Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
 
-    Text(text = "Home")
+        Text(text = "Favorite")
 
-}
+    }
 
 }
