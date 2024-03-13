@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 
 data class ResponseOfMainBannerMovie(
     @SerializedName("data")
-    val `data`: List<Data>,
+    val `data`: List<Data> = emptyList(),
     @SerializedName("metadata")
-    val metadata: Metadata?
+    val metadata: Metadata =ResponseOfMainBannerMovie.Metadata()
 ) {
     data class Data(
         @SerializedName("country")
@@ -30,12 +30,12 @@ data class ResponseOfMainBannerMovie(
 
     data class Metadata(
         @SerializedName("current_page")
-        val currentPage: String?,
+        val currentPage: String ="",
         @SerializedName("page_count")
-        val pageCount: Int?,
+        val pageCount: Int = 0,
         @SerializedName("per_page")
-        val perPage: Int?,
+        val perPage: Int = 0,
         @SerializedName("total_count")
-        val totalCount: Int?
+        val totalCount: Int =0
     )
 }
