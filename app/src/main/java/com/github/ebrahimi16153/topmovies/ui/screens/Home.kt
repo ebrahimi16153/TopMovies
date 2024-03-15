@@ -45,8 +45,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.github.ebrahimi16153.topmovies.models.ResponseOfMainBannerMovie
+import com.github.ebrahimi16153.topmovies.models.ResponseOfMovieList
 import com.github.ebrahimi16153.topmovies.util.Error
 import com.github.ebrahimi16153.topmovies.util.Loading
+import com.github.ebrahimi16153.topmovies.util.MovieItems
 import com.github.ebrahimi16153.topmovies.viewModel.HomeViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -55,14 +57,16 @@ fun Home(navHostController: NavHostController, homeViewModel: HomeViewModel) {
 
     // call api
     homeViewModel.getMainBannerMovieList(3)
+    homeViewModel.lastMovie(page = 1)
     // get MainBanner movie list
-    val list = homeViewModel.mainBannerMovieList.collectAsState()
+    val mainBannerList = homeViewModel.mainBannerMovieList.collectAsState()
+    val lastMovieList = homeViewModel.lastMovieList.collectAsState()
 
     // if api can't create response -> error massage must show to user  -> if list going wrong -> val error is fill
     val error = homeViewModel.apiError.collectAsState()
 
     // handel page of Pager
-    val pagerState = rememberPagerState(pageCount = { list.value.size })
+    val pagerState = rememberPagerState(pageCount = { mainBannerList.value.size })
 
 
 
@@ -72,7 +76,7 @@ fun Home(navHostController: NavHostController, homeViewModel: HomeViewModel) {
         if (error.value.isEmpty()) {
 
             // check list is ready or not
-            if (list.value.isEmpty()) {
+            if (mainBannerList.value.isEmpty() && lastMovieList.value.isEmpty()) {
 
                 //  if list is not ready show a loading
                 Loading()
@@ -84,8 +88,16 @@ fun Home(navHostController: NavHostController, homeViewModel: HomeViewModel) {
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
                 ) {
-                    Pager(modifier = Modifier.fillMaxSize().height(500.dp), pagerState = pagerState, list = list)
-                    LastMovie()
+                    Pager(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .height(500.dp),
+                        pagerState = pagerState,
+                        list = mainBannerList
+                    )
+
+                    LastMovie(lastMovies = lastMovieList.value )
+
                 }
             }
         } else {
@@ -98,10 +110,11 @@ fun Home(navHostController: NavHostController, homeViewModel: HomeViewModel) {
 
 
 @Composable
-fun LastMovie() {
-    (0..200).forEach {
+fun LastMovie(lastMovies: List<ResponseOfMovieList.Data>) {
+
+    lastMovies.forEach {
         Column {
-            Text(text = it.toString())
+            MovieItems(movie = it)
         }
     }
 
@@ -116,14 +129,14 @@ private fun Pager(
     modifier: Modifier = Modifier
 ) {
 
-        HorizontalPager(
-            modifier = modifier,
-            state = pagerState
-        ) { index ->
-            // Our page content
+    HorizontalPager(
+        modifier = modifier,
+        state = pagerState
+    ) { index ->
+        // Our page content
             MainBanner(modifier = Modifier.fillMaxSize(), movie = list.value[index])
-            MainBannerIndicator(pagerState = pagerState)
-        }
+    }
+    MainBannerIndicator(pagerState = pagerState)
 
 
 
@@ -131,7 +144,7 @@ private fun Pager(
 
 @Composable
 fun MainBanner(
-    modifier: Modifier =Modifier,
+    modifier: Modifier = Modifier,
     movie: ResponseOfMainBannerMovie.Data
 ) {
 
@@ -152,7 +165,8 @@ fun MainBanner(
         //Shadow
         Box(
             modifier = Modifier
-                .fillMaxWidth().height(300.dp)
+                .fillMaxWidth()
+                .height(300.dp)
                 .background(
                     brush = Brush.verticalGradient(
                         listOf(
@@ -248,8 +262,7 @@ fun MainBanner(
 @Composable
 private fun MainBannerIndicator(pagerState: PagerState) {
     Row(
-        Modifier
-            .wrapContentHeight()
+        Modifier.height(10.dp)
             .fillMaxWidth()
             .padding(bottom = 8.dp),
         horizontalArrangement = Arrangement.Center
@@ -269,20 +282,5 @@ private fun MainBannerIndicator(pagerState: PagerState) {
     }
 }
 
-val movie = ResponseOfMainBannerMovie.Data(
-    country = "USA",
-    id = 1,
-    images = listOf("https://moviesapi.ir/images/tt0468569_poster.jpg"),
-    poster = "https://moviesapi.ir/images/tt0468569_poster.jpg",
-    genres = listOf(""),
-    imdbRating = "9.0",
-    title = "Mohammad",
-    year = "1995"
-)
 
-@Composable
-@Preview
-fun PreviewOFContent() {
-    MainBanner(movie = movie)
-}
 

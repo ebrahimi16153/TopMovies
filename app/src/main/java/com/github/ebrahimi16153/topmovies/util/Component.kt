@@ -30,7 +30,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.github.ebrahimi16153.topmovies.R
+import com.github.ebrahimi16153.topmovies.models.ResponseOfMovieList
 
 @Composable
 fun Loading(){
@@ -59,30 +61,30 @@ fun Error(value:String){
 }
 
 
-@Preview
 @Composable
-fun MovieItems(){
+fun MovieItems(movie:ResponseOfMovieList.Data){
 
 
     Surface(modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.background) {
         Row(modifier = Modifier
             .fillMaxWidth()
-            .height(180.dp).padding(10.dp)) {
+            .height(180.dp)
+            .padding(10.dp)) {
             //poster
-            Image(modifier = Modifier
+            AsyncImage(modifier = Modifier
                 .fillMaxHeight()
-                .width(130.dp), painter = painterResource(id = R.drawable.poster), contentDescription ="", contentScale = ContentScale.Crop )
+                .width(130.dp), model = movie.poster, contentDescription ="", contentScale = ContentScale.Crop )
             Spacer(modifier = Modifier.width(10.dp))
             Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
                // title
-                Text(text = "THE GODFATHER", style = MaterialTheme.typography.titleMedium , maxLines = 1, overflow = TextOverflow.Ellipsis, color = MaterialTheme.colorScheme.onBackground)
+                Text(text = movie.title!!, style = MaterialTheme.typography.titleMedium , maxLines = 1, overflow = TextOverflow.Ellipsis, color = MaterialTheme.colorScheme.onBackground)
                 Spacer(modifier = Modifier.height(5.dp))
 
                 // rate
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(imageVector = Icons.Rounded.Star, contentDescription ="" , tint = MaterialTheme.colorScheme.onBackground)
                     Spacer(modifier = Modifier.width(3.dp))
-                    Text(text = "9.1", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground)
+                    Text(text = movie.imdbRating!!, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground)
                 }
                 Spacer(modifier = Modifier.height(5.dp))
 
@@ -90,7 +92,7 @@ fun MovieItems(){
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(imageVector = Icons.Rounded.Place, contentDescription ="" , tint = MaterialTheme.colorScheme.onBackground)
                     Spacer(modifier = Modifier.width(3.dp))
-                    Text(text = "USA", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground)
+                    Text(text = movie.country!!, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground)
                 }
                 Spacer(modifier = Modifier.height(5.dp))
 
@@ -98,7 +100,7 @@ fun MovieItems(){
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(imageVector = Icons.Rounded.DateRange, contentDescription ="" , tint = MaterialTheme.colorScheme.onBackground)
                     Spacer(modifier = Modifier.width(3.dp))
-                    Text(text = "USA", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground)
+                    Text(text = movie.year!!, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground)
                 }
                 Spacer(modifier = Modifier.height(5.dp))
 
