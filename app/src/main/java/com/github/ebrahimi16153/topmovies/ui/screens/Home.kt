@@ -27,8 +27,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,18 +39,21 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.github.ebrahimi16153.topmovies.models.ResponseOfMainBannerMovie
+import com.github.ebrahimi16153.topmovies.util.Error
+import com.github.ebrahimi16153.topmovies.util.Loading
 import com.github.ebrahimi16153.topmovies.viewModel.HomeViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Home(navHostController: NavHostController, homeViewModel: HomeViewModel) {
-    val loading = remember {
-        mutableStateOf(false)
-    }
-    // cal api
+
+    // call api
     homeViewModel.getMainBannerMovieList(3)
     // get MainBanner movie list
     val list = homeViewModel.mainBannerMovieList.collectAsState()
+
+    // if api can't create response -> error massage must show to user  -> if list going wrong -> val error is fill
+    val error = homeViewModel.mainBannerError.collectAsState()
 
     // handel page of Pager
     val pagerState = rememberPagerState(pageCount = { list.value.size })
@@ -60,22 +61,38 @@ fun Home(navHostController: NavHostController, homeViewModel: HomeViewModel) {
 
 
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
 
 
-            HorizontalPager(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.65f),
-                state = pagerState
-            ) { index ->
-                // Our page content
-                MainBanner(movie = list.value[index])
+        Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+
+            // check error is empty
+            if (error.value.isEmpty()) {
+
+                // check list is ready or not
+                if (list.value.isEmpty()) {
+
+                    //  if list is not ready show a loading
+                    Loading()
+                } else {
+
+                    // if list is ready show content (MainBanner)
+                    HorizontalPager(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(0.65f),
+                        state = pagerState
+                    ) { index ->
+                        // Our page content
+                        MainBanner(movie = list.value[index])
+                    }
+                    MainBannerIndicator(pagerState = pagerState)
+                }
+            } else {
+                //if error is not empty show error
+                Error(value = error.value)
             }
-            MainBannerIndicator(pagerState = pagerState)
+
+
         }
 
 
@@ -93,7 +110,8 @@ private fun MainBannerIndicator(pagerState: PagerState) {
         horizontalArrangement = Arrangement.Center
     ) {
         repeat(pagerState.pageCount) { iteration ->
-            val color = if (pagerState.currentPage == iteration) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
+            val color =
+                if (pagerState.currentPage == iteration) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
             Box(
                 modifier = Modifier
                     .clip(RectangleShape)
@@ -153,10 +171,10 @@ fun MainBanner(
                     style = MaterialTheme.typography.headlineLarge,
                     fontFamily = FontFamily.SansSerif
                 )
-                
+
                 Spacer(modifier = Modifier.height(10.dp))
-                
-                
+
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceAround
@@ -177,7 +195,7 @@ fun MainBanner(
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        
+
 //                        country
                         Icon(
                             imageVector = Icons.Rounded.LocationOn,
