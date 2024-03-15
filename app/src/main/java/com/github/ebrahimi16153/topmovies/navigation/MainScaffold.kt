@@ -25,11 +25,13 @@ import com.github.ebrahimi16153.topmovies.ui.screens.Home
 import com.github.ebrahimi16153.topmovies.ui.screens.Search
 import com.github.ebrahimi16153.topmovies.ui.screens.Splash
 import com.github.ebrahimi16153.topmovies.viewModel.HomeViewModel
+import com.github.ebrahimi16153.topmovies.viewModel.SearchViewModel
 
 @Composable
 fun MainScaffold(
     navController: NavHostController,
-    homeViewModel: HomeViewModel
+    homeViewModel: HomeViewModel,
+    searchViewModel: SearchViewModel
 ) {
 
     val navBarVisibility = remember {
@@ -86,7 +88,7 @@ fun MainScaffold(
 
                 // search
                 composable(ScreenRoute.Search.name) {
-                    Search(navHostController = navController)
+                    Search(navHostController = navController,searchViewModel = searchViewModel)
                 }
 
                 //favorite

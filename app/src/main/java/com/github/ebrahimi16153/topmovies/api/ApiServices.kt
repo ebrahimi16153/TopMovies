@@ -20,4 +20,8 @@ interface ApiServices {
     suspend fun getLastMovieList(@Query("page") page:Int):ResponseOfMovieList
 
 
+    @GET("movies")
+    suspend fun getSearchMovieList(@Query("q") searchQuery:String):ResponseOfMovieList
+
+
 }
