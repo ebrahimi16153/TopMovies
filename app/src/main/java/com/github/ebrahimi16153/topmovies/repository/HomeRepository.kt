@@ -2,11 +2,12 @@ package com.github.ebrahimi16153.topmovies.repository
 
 import com.github.ebrahimi16153.topmovies.api.ApiServices
 import com.github.ebrahimi16153.topmovies.models.ResponseOfMainBannerMovie
+import com.github.ebrahimi16153.topmovies.models.ResponseOfMovieList
 import com.github.ebrahimi16153.topmovies.models.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import java.lang.Exception
 import javax.inject.Inject
+import kotlin.Exception
 
 class HomeRepository @Inject constructor(private val apiServices: ApiServices) {
 
@@ -27,6 +28,22 @@ class HomeRepository @Inject constructor(private val apiServices: ApiServices) {
             emit(Result.Success(getResponse))
 
         }
+    }
+
+
+    suspend fun lastMovie(page: Int): Flow<Result<ResponseOfMovieList>> {
+
+        return flow {
+            val getResponse = try {
+                apiServices.getLastMovieList(page = page)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                emit(Result.Error(massage = e.message.toString()))
+                return@flow
+            }
+            emit(Result.Success(getResponse))
+        }
+
     }
 
 
