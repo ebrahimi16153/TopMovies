@@ -175,7 +175,7 @@ private fun DetailContent(
                             .fillMaxWidth()
                             .padding(horizontal = 30.dp)
                             .clip(shape = RoundedCornerShape(10.dp)),
-                        model = movieDetail!!.poster!!,
+                        model = movieDetail.poster!!,
                         contentDescription = "",
                         contentScale = ContentScale.FillWidth
                     )
@@ -218,7 +218,7 @@ private fun DetailContent(
                                     tint = MaterialTheme.colorScheme.primary
                                 )
                                 Text(
-                                    text = movieDetail!!.imdbRating!!,
+                                    text = movieDetail.imdbRating!!,
                                     color = MaterialTheme.colorScheme.onBackground,
                                     style = MaterialTheme.typography.bodyLarge,
                                     fontFamily = FontFamily.SansSerif
@@ -233,7 +233,7 @@ private fun DetailContent(
                                     tint = MaterialTheme.colorScheme.primary
                                 )
                                 Text(
-                                    text = movieDetail!!.country!!,
+                                    text = movieDetail.country!!,
                                     color = MaterialTheme.colorScheme.onBackground,
                                     style = MaterialTheme.typography.bodyLarge,
                                     fontFamily = FontFamily.SansSerif
@@ -247,7 +247,7 @@ private fun DetailContent(
                                     tint = MaterialTheme.colorScheme.primary
                                 )
                                 Text(
-                                    text = movieDetail!!.released!!,
+                                    text = movieDetail.released!!,
                                     color = MaterialTheme.colorScheme.onBackground,
                                     style = MaterialTheme.typography.bodyLarge,
                                     fontFamily = FontFamily.SansSerif
