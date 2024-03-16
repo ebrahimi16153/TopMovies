@@ -1,5 +1,6 @@
 package com.github.ebrahimi16153.topmovies.ui.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material.icons.rounded.KeyboardArrowRight
@@ -26,12 +28,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.github.ebrahimi16153.topmovies.models.FavoriteMovie
+import com.github.ebrahimi16153.topmovies.navigation.ScreenRoute
 import com.github.ebrahimi16153.topmovies.viewModel.FavViewModel
 
 @Composable
@@ -50,7 +54,9 @@ fun Favorite(navHostController: NavHostController, favViewModel: FavViewModel) {
             LazyColumn {
                 items(items = movieList.value , key = {it.id}){
 
-                    FavMovieItems(movie = it)
+                    FavMovieItems(movie = it, onItemClick = {
+                        navHostController.navigate("${ScreenRoute.Detail.name}/${it.id}")
+                    })
 
                 }
             }
@@ -63,10 +69,10 @@ fun Favorite(navHostController: NavHostController, favViewModel: FavViewModel) {
 }
 
 @Composable
-fun FavMovieItems(movie: FavoriteMovie){
+fun FavMovieItems(movie: FavoriteMovie, onItemClick:() -> Unit){
 
 
-    Surface(modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.background) {
+    Surface(modifier = Modifier.fillMaxWidth().clickable { onItemClick() }, color = MaterialTheme.colorScheme.background) {
         Row(modifier = Modifier
             .fillMaxWidth()
             .height(180.dp)
@@ -74,7 +80,7 @@ fun FavMovieItems(movie: FavoriteMovie){
             //poster
             AsyncImage(modifier = Modifier
                 .fillMaxHeight()
-                .width(130.dp), model = movie.poster, contentDescription ="", contentScale = ContentScale.Crop )
+                .width(130.dp).clip(shape = RoundedCornerShape(5.dp)), model = movie.poster, contentDescription ="", contentScale = ContentScale.Crop )
             Spacer(modifier = Modifier.width(10.dp))
             Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
                 // title

@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.github.ebrahimi16153.topmovies.navigation.MainScaffold
 import com.github.ebrahimi16153.topmovies.ui.theme.TopMoviesTheme
+import com.github.ebrahimi16153.topmovies.viewModel.DetailViewModel
 import com.github.ebrahimi16153.topmovies.viewModel.FavViewModel
 import com.github.ebrahimi16153.topmovies.viewModel.HomeViewModel
 import com.github.ebrahimi16153.topmovies.viewModel.SearchViewModel
@@ -22,6 +23,7 @@ class MainActivity : ComponentActivity() {
     private val homeViewModel:HomeViewModel by viewModels()
     private val searchViewModel: SearchViewModel by viewModels()
     private val favViewModel:FavViewModel by viewModels()
+    private val detailViewModel: DetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +38,8 @@ class MainActivity : ComponentActivity() {
                     MainScaffold(navController = navController,
                         homeViewModel = homeViewModel,
                         searchViewModel = searchViewModel,
-                        favViewModel = favViewModel
+                        favViewModel = favViewModel,
+                        detailViewModel = detailViewModel
                         )
                 }
             }

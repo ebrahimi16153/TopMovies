@@ -1,6 +1,7 @@
 package com.github.ebrahimi16153.topmovies.api
 
 import com.github.ebrahimi16153.topmovies.models.ResponseOfMainBannerMovie
+import com.github.ebrahimi16153.topmovies.models.ResponseOfMovieDetail
 import com.github.ebrahimi16153.topmovies.models.ResponseOfMovieList
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -22,6 +23,10 @@ interface ApiServices {
 
     @GET("movies")
     suspend fun getSearchMovieList(@Query("q") searchQuery:String):ResponseOfMovieList
+
+
+    @GET("movies/{movie_id}")
+    suspend fun getMovieDetail(@Path("movie_id") movieId:Int):ResponseOfMovieDetail
 
 
 }

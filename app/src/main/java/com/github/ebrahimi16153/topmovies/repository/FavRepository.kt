@@ -7,8 +7,4 @@ import javax.inject.Inject
 class FavRepository @Inject constructor(private val dao: FavDao) {
 
     fun getFavList() = dao.getFavList()
-    fun existsMovie(id:Int) = dao.existsMovie(id)
-    suspend fun addFav(favoriteMovie: FavoriteMovie) = dao.insert(favoriteMovie = favoriteMovie)
-    suspend fun deleteFav(favoriteMovie: FavoriteMovie) = dao.delete(favoriteMovie = favoriteMovie)
-
 }

@@ -28,6 +28,7 @@ import com.github.ebrahimi16153.topmovies.ui.screens.Home
 import com.github.ebrahimi16153.topmovies.ui.screens.Search
 import com.github.ebrahimi16153.topmovies.ui.screens.Splash
 import com.github.ebrahimi16153.topmovies.util.Constant
+import com.github.ebrahimi16153.topmovies.viewModel.DetailViewModel
 import com.github.ebrahimi16153.topmovies.viewModel.FavViewModel
 import com.github.ebrahimi16153.topmovies.viewModel.HomeViewModel
 import com.github.ebrahimi16153.topmovies.viewModel.SearchViewModel
@@ -37,7 +38,8 @@ fun MainScaffold(
     navController: NavHostController,
     homeViewModel: HomeViewModel,
     searchViewModel: SearchViewModel,
-    favViewModel: FavViewModel
+    favViewModel: FavViewModel,
+    detailViewModel: DetailViewModel
 ) {
 
     val navBarVisibility = remember {
@@ -77,7 +79,7 @@ fun MainScaffold(
 
     )
     {
-        Surface(modifier = Modifier.padding(it)) {
+        Surface(modifier = Modifier.padding(it), color = MaterialTheme.colorScheme.background) {
 
             //navigation
             NavHost(navController = navController, startDestination = ScreenRoute.Splash.name) {
@@ -110,7 +112,7 @@ fun MainScaffold(
 
                     val movieId = navBackStackEntry.arguments?.getInt(Constant.DETAIL_ARGUMENT_KEY)?: 0
 
-                    Detail(navHostController = navController, movieId = movieId)
+                    Detail(navHostController = navController, movieId = movieId , detailViewModel = detailViewModel)
 
                 }
 
@@ -128,6 +130,7 @@ fun BottomBar(navController: NavHostController, currentDestination: String) {
         NavigationBarItem(
             selected = currentDestination == "Home",
             onClick = {
+                navController.popBackStack()
                 navController.navigate(ScreenRoute.Home.name)
 
             },
@@ -149,7 +152,7 @@ fun BottomBar(navController: NavHostController, currentDestination: String) {
         NavigationBarItem(
             selected = currentDestination == ScreenRoute.Search.name,
             onClick = {
-
+                navController.popBackStack()
                 navController.navigate(ScreenRoute.Search.name)
 
             },
@@ -171,7 +174,7 @@ fun BottomBar(navController: NavHostController, currentDestination: String) {
         NavigationBarItem(
             selected = currentDestination == ScreenRoute.Favorite.name,
             onClick = {
-
+                navController.popBackStack()
                 navController.navigate(ScreenRoute.Favorite.name)
 
 
