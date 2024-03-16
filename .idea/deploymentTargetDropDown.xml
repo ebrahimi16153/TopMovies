@@ -2,30 +2,8 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="IndicatorPreView">
+      <entry key="DetailPreView">
         <State />
-      </entry>
-      <entry key="MovieItems">
-        <State />
-      </entry>
-      <entry key="PreViewSearchBar">
-        <State />
-      </entry>
-      <entry key="PreviewOFContent">
-        <State>
-          <runningDeviceTargetSelectedWithDropDown>
-            <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\Mohammad\.android\avd\Pixel_8_Pro_API_34.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-03-15T13:00:05.613368900Z" />
-        </State>
       </entry>
       <entry key="app">
         <State />

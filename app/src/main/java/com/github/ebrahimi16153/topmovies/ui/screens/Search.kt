@@ -19,6 +19,8 @@ import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.compose.ui.unit.dp
+import com.github.ebrahimi16153.topmovies.navigation.ScreenRoute
+import com.github.ebrahimi16153.topmovies.util.Constant
 import com.github.ebrahimi16153.topmovies.util.MovieItems
 import com.github.ebrahimi16153.topmovies.viewModel.SearchViewModel
 
@@ -43,7 +45,9 @@ fun Search(navHostController: NavHostController, searchViewModel: SearchViewMode
                 items(searchMovieList.value, key = {movie ->
                     movie.id!!
                 }){
-                    MovieItems(movie = it)
+                    MovieItems(movie = it, onItemClick ={
+                        navHostController.navigate("${ScreenRoute.Detail.name}/${it.id}")
+                    })
                 }
             }
         }

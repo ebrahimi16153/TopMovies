@@ -18,12 +18,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.github.ebrahimi16153.topmovies.ui.screens.Detail
 import com.github.ebrahimi16153.topmovies.ui.screens.Favorite
 import com.github.ebrahimi16153.topmovies.ui.screens.Home
 import com.github.ebrahimi16153.topmovies.ui.screens.Search
 import com.github.ebrahimi16153.topmovies.ui.screens.Splash
+import com.github.ebrahimi16153.topmovies.util.Constant
 import com.github.ebrahimi16153.topmovies.viewModel.FavViewModel
 import com.github.ebrahimi16153.topmovies.viewModel.HomeViewModel
 import com.github.ebrahimi16153.topmovies.viewModel.SearchViewModel
@@ -75,7 +79,7 @@ fun MainScaffold(
     {
         Surface(modifier = Modifier.padding(it)) {
 
-           //navigation
+            //navigation
             NavHost(navController = navController, startDestination = ScreenRoute.Splash.name) {
 
                 //splash
@@ -85,29 +89,35 @@ fun MainScaffold(
 
                 //  home
                 composable(ScreenRoute.Home.name) {
-                    Home(navHostController = navController,homeViewModel = homeViewModel)
+                    Home(navHostController = navController, homeViewModel = homeViewModel)
                 }
 
                 // search
                 composable(ScreenRoute.Search.name) {
-                    Search(navHostController = navController,searchViewModel = searchViewModel)
+                    Search(navHostController = navController, searchViewModel = searchViewModel)
                 }
 
                 //favorite
                 composable(ScreenRoute.Favorite.name) {
-                    Favorite(navHostController = navController,favViewModel = favViewModel)
+                    Favorite(navHostController = navController, favViewModel = favViewModel)
                 }
 
+                // Detail
+                composable(route = "${ScreenRoute.Detail.name}/{${Constant.DETAIL_ARGUMENT_KEY}}",
+                    arguments = listOf(navArgument(name = Constant.DETAIL_ARGUMENT_KEY) {
+                    type = NavType.IntType
+                })){navBackStackEntry ->
+
+                    val movieId = navBackStackEntry.arguments?.getInt(Constant.DETAIL_ARGUMENT_KEY)?: 0
+
+                    Detail(navHostController = navController, movieId = movieId)
+
+                }
 
             }
-
-
         }
     }
-
-
 }
-
 
 
 //BottomNavigationBar
@@ -115,44 +125,71 @@ fun MainScaffold(
 fun BottomBar(navController: NavHostController, currentDestination: String) {
 
     NavigationBar(containerColor = MaterialTheme.colorScheme.secondary) {
-        NavigationBarItem(selected = currentDestination == "Home", onClick = {
-            navController.navigate(ScreenRoute.Home.name)
+        NavigationBarItem(
+            selected = currentDestination == "Home",
+            onClick = {
+                navController.navigate(ScreenRoute.Home.name)
 
-        }, icon = {
-            Icon(
-                imageVector = Icons.Rounded.Home,
-                contentDescription = "home"
+            },
+            icon = {
+                Icon(
+                    imageVector = Icons.Rounded.Home,
+                    contentDescription = "home"
+                )
+            },
+            label = {
+                Text(text = "Home")
+            },
+            colors = NavigationBarItemDefaults.colors(
+                selectedIconColor = MaterialTheme.colorScheme.primary,
+                selectedTextColor = MaterialTheme.colorScheme.primary
             )
-        }, label = {
-            Text(text = "Home")
-        }, colors = NavigationBarItemDefaults.colors(selectedIconColor = MaterialTheme.colorScheme.primary, selectedTextColor = MaterialTheme.colorScheme.primary))
+        )
 
-        NavigationBarItem(selected = currentDestination == ScreenRoute.Search.name, onClick = {
+        NavigationBarItem(
+            selected = currentDestination == ScreenRoute.Search.name,
+            onClick = {
 
-            navController.navigate(ScreenRoute.Search.name)
+                navController.navigate(ScreenRoute.Search.name)
 
-        }, icon = {
-            Icon(
-                imageVector = Icons.Rounded.Search,
-                contentDescription = "search"
+            },
+            icon = {
+                Icon(
+                    imageVector = Icons.Rounded.Search,
+                    contentDescription = "search"
+                )
+            },
+            label = {
+                Text(text = "Search")
+            },
+            colors = NavigationBarItemDefaults.colors(
+                selectedIconColor = MaterialTheme.colorScheme.primary,
+                selectedTextColor = MaterialTheme.colorScheme.primary
             )
-        }, label = {
-            Text(text = "Search")
-        },colors = NavigationBarItemDefaults.colors(selectedIconColor = MaterialTheme.colorScheme.primary, selectedTextColor = MaterialTheme.colorScheme.primary))
+        )
 
-        NavigationBarItem(selected = currentDestination == ScreenRoute.Favorite.name, onClick = {
+        NavigationBarItem(
+            selected = currentDestination == ScreenRoute.Favorite.name,
+            onClick = {
 
-            navController.navigate(ScreenRoute.Favorite.name)
+                navController.navigate(ScreenRoute.Favorite.name)
 
 
-        }, icon = {
-            Icon(
-                imageVector = Icons.Rounded.Favorite,
-                contentDescription = "favorite"
+            },
+            icon = {
+                Icon(
+                    imageVector = Icons.Rounded.Favorite,
+                    contentDescription = "favorite"
+                )
+            },
+            label = {
+                Text(text = "Favorite")
+            },
+            colors = NavigationBarItemDefaults.colors(
+                selectedIconColor = MaterialTheme.colorScheme.primary,
+                selectedTextColor = MaterialTheme.colorScheme.primary
             )
-        }, label = {
-            Text(text = "Favorite")
-        },colors = NavigationBarItemDefaults.colors(selectedIconColor = MaterialTheme.colorScheme.primary, selectedTextColor = MaterialTheme.colorScheme.primary))
+        )
 
     }
 

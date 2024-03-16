@@ -44,6 +44,8 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.github.ebrahimi16153.topmovies.models.ResponseOfMainBannerMovie
 import com.github.ebrahimi16153.topmovies.models.ResponseOfMovieList
+import com.github.ebrahimi16153.topmovies.navigation.ScreenRoute
+import com.github.ebrahimi16153.topmovies.util.Constant
 import com.github.ebrahimi16153.topmovies.util.Error
 import com.github.ebrahimi16153.topmovies.util.Loading
 import com.github.ebrahimi16153.topmovies.util.MovieItems
@@ -94,7 +96,7 @@ fun Home(navHostController: NavHostController, homeViewModel: HomeViewModel) {
                         list = mainBannerList
                     )
 
-                    LastMovie(lastMovies = lastMovieList.value )
+                    LastMovie(lastMovies = lastMovieList.value,navController = navHostController)
 
                 }
             }
@@ -108,11 +110,13 @@ fun Home(navHostController: NavHostController, homeViewModel: HomeViewModel) {
 
 
 @Composable
-fun LastMovie(lastMovies: List<ResponseOfMovieList.Data>) {
+fun LastMovie(lastMovies: List<ResponseOfMovieList.Data>,navController: NavHostController) {
 
-    lastMovies.forEach {
+    lastMovies.forEach { movie ->
         Column {
-            MovieItems(movie = it)
+            MovieItems(movie = movie,onItemClick = {
+                navController.navigate(route = "${ScreenRoute.Detail.name}/${movie.id}")
+            })
         }
     }
 

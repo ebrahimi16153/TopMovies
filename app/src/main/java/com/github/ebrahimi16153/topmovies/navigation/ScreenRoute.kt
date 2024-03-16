@@ -5,6 +5,7 @@ enum class ScreenRoute {
     Splash,
     Home,
     Search,
-    Favorite
+    Favorite,
+    Detail
 
 }
