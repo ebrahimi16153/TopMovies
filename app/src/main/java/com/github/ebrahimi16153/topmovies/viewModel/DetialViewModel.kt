@@ -3,7 +3,6 @@ package com.github.ebrahimi16153.topmovies.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.ebrahimi16153.topmovies.models.FavoriteMovie
-import com.github.ebrahimi16153.topmovies.models.ResponseOfMainBannerMovie
 import com.github.ebrahimi16153.topmovies.models.ResponseOfMovieDetail
 import com.github.ebrahimi16153.topmovies.models.Result
 import com.github.ebrahimi16153.topmovies.repository.DetailRepository

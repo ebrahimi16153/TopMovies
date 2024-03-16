@@ -1,6 +1,5 @@
 package com.github.ebrahimi16153.topmovies.ui.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,21 +38,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.github.ebrahimi16153.topmovies.R
 import com.github.ebrahimi16153.topmovies.models.FavoriteMovie
 import com.github.ebrahimi16153.topmovies.models.ResponseOfMovieDetail
 import com.github.ebrahimi16153.topmovies.navigation.ScreenRoute
-import com.github.ebrahimi16153.topmovies.ui.theme.TopMoviesTheme
 import com.github.ebrahimi16153.topmovies.util.Error
 import com.github.ebrahimi16153.topmovies.util.Loading
 import com.github.ebrahimi16153.topmovies.viewModel.DetailViewModel
