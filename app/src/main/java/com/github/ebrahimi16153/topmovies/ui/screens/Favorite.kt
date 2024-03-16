@@ -1,7 +1,6 @@
 package com.github.ebrahimi16153.topmovies.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -33,8 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.github.ebrahimi16153.topmovies.models.FavoriteMovie
-import com.github.ebrahimi16153.topmovies.models.ResponseOfMovieList
-import com.github.ebrahimi16153.topmovies.util.MovieItems
 import com.github.ebrahimi16153.topmovies.viewModel.FavViewModel
 
 @Composable
