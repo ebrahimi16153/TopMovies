@@ -24,6 +24,7 @@ import com.github.ebrahimi16153.topmovies.ui.screens.Favorite
 import com.github.ebrahimi16153.topmovies.ui.screens.Home
 import com.github.ebrahimi16153.topmovies.ui.screens.Search
 import com.github.ebrahimi16153.topmovies.ui.screens.Splash
+import com.github.ebrahimi16153.topmovies.viewModel.FavViewModel
 import com.github.ebrahimi16153.topmovies.viewModel.HomeViewModel
 import com.github.ebrahimi16153.topmovies.viewModel.SearchViewModel
 
@@ -31,7 +32,8 @@ import com.github.ebrahimi16153.topmovies.viewModel.SearchViewModel
 fun MainScaffold(
     navController: NavHostController,
     homeViewModel: HomeViewModel,
-    searchViewModel: SearchViewModel
+    searchViewModel: SearchViewModel,
+    favViewModel: FavViewModel
 ) {
 
     val navBarVisibility = remember {
@@ -93,7 +95,7 @@ fun MainScaffold(
 
                 //favorite
                 composable(ScreenRoute.Favorite.name) {
-                    Favorite(navHostController = navController)
+                    Favorite(navHostController = navController,favViewModel = favViewModel)
                 }
 
 
