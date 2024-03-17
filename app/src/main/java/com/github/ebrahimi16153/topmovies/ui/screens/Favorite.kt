@@ -25,6 +25,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +37,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.github.ebrahimi16153.topmovies.models.FavoriteMovie
 import com.github.ebrahimi16153.topmovies.navigation.ScreenRoute
+import com.github.ebrahimi16153.topmovies.util.EmptyContent
 import com.github.ebrahimi16153.topmovies.viewModel.FavViewModel
 
 @Composable
@@ -49,73 +51,149 @@ fun Favorite(navHostController: NavHostController, favViewModel: FavViewModel) {
 //        get list
         val movieList = favViewModel.favMovieList.collectAsState()
 
-        Column(modifier = Modifier.fillMaxSize()) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
 
-            LazyColumn {
-                items(items = movieList.value , key = {it.id}){
-
-                    FavMovieItems(movie = it, onItemClick = {
-                        navHostController.navigate("${ScreenRoute.Detail.name}/${it.id}")
-                    })
-
-                }
+            if (movieList.value.isEmpty()) {
+               FavEmpty(massage = "First add Some movie to Favorite")
+            } else {
+                FavContent(movieList, navHostController)
             }
+
         }
 
     }
 
 
-
 }
 
 @Composable
-fun FavMovieItems(movie: FavoriteMovie, onItemClick:() -> Unit){
+private fun FavContent(
+    movieList: State<List<FavoriteMovie>>,
+    navHostController: NavHostController
+) {
+    LazyColumn {
+        items(items = movieList.value, key = { it.id }) {
+            FavMovieItems(movie = it, onItemClick = {
+                navHostController.navigate("${ScreenRoute.Detail.name}/${it.id}")
+            })
+
+        }
+    }
+}
+
+@Composable
+private fun FavEmpty(massage: String) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        EmptyContent(label = massage)
+    }
+}
 
 
-    Surface(modifier = Modifier.fillMaxWidth().clickable { onItemClick() }, color = MaterialTheme.colorScheme.background) {
-        Row(modifier = Modifier
+@Composable
+fun FavMovieItems(movie: FavoriteMovie, onItemClick: () -> Unit) {
+
+
+    Surface(
+        modifier = Modifier
             .fillMaxWidth()
-            .height(180.dp)
-            .padding(10.dp)) {
+            .clickable { onItemClick() }, color = MaterialTheme.colorScheme.background
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(180.dp)
+                .padding(10.dp)
+        ) {
             //poster
-            AsyncImage(modifier = Modifier
-                .fillMaxHeight()
-                .width(130.dp).clip(shape = RoundedCornerShape(5.dp)), model = movie.poster, contentDescription ="", contentScale = ContentScale.Crop )
+            AsyncImage(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(130.dp)
+                    .clip(shape = RoundedCornerShape(5.dp)),
+                model = movie.poster,
+                contentDescription = "",
+                contentScale = ContentScale.Crop
+            )
             Spacer(modifier = Modifier.width(10.dp))
             Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
                 // title
-                Text(text = movie.title, style = MaterialTheme.typography.titleMedium , maxLines = 1, overflow = TextOverflow.Ellipsis, color = MaterialTheme.colorScheme.onBackground)
+                Text(
+                    text = movie.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
                 Spacer(modifier = Modifier.height(5.dp))
 
                 // rate
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(imageVector = Icons.Rounded.Star, contentDescription ="" , tint = MaterialTheme.colorScheme.onBackground)
+                    Icon(
+                        imageVector = Icons.Rounded.Star,
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
                     Spacer(modifier = Modifier.width(3.dp))
-                    Text(text = movie.rate, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground)
+                    Text(
+                        text = movie.rate,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
                 }
                 Spacer(modifier = Modifier.height(5.dp))
 
                 // country
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(imageVector = Icons.Rounded.Place, contentDescription ="" , tint = MaterialTheme.colorScheme.onBackground)
+                    Icon(
+                        imageVector = Icons.Rounded.Place,
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
                     Spacer(modifier = Modifier.width(3.dp))
-                    Text(text = movie.country, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground)
+                    Text(
+                        text = movie.country,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
                 }
                 Spacer(modifier = Modifier.height(5.dp))
 
                 // year
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(imageVector = Icons.Rounded.DateRange, contentDescription ="" , tint = MaterialTheme.colorScheme.onBackground)
+                    Icon(
+                        imageVector = Icons.Rounded.DateRange,
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
                     Spacer(modifier = Modifier.width(3.dp))
-                    Text(text = movie.year, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground)
+                    Text(
+                        text = movie.year,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
                 }
                 Spacer(modifier = Modifier.height(5.dp))
 
 
                 // more info
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = "more info", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.tertiary)
-                    Icon(imageVector = Icons.Rounded.KeyboardArrowRight, contentDescription ="" , tint = MaterialTheme.colorScheme.tertiary)
+                    Text(
+                        text = "more info",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.tertiary
+                    )
+                    Icon(
+                        imageVector = Icons.Rounded.KeyboardArrowRight,
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.tertiary
+                    )
 
                 }
                 Spacer(modifier = Modifier.height(5.dp))

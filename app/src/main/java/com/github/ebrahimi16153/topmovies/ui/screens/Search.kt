@@ -16,40 +16,56 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.compose.ui.unit.dp
 import com.github.ebrahimi16153.topmovies.navigation.ScreenRoute
 import com.github.ebrahimi16153.topmovies.util.Constant
+import com.github.ebrahimi16153.topmovies.util.Error
+import com.github.ebrahimi16153.topmovies.util.Loading
 import com.github.ebrahimi16153.topmovies.util.MovieItems
 import com.github.ebrahimi16153.topmovies.viewModel.SearchViewModel
 
 
 @Composable
 fun Search(navHostController: NavHostController, searchViewModel: SearchViewModel) {
-    
 
+  val loading = remember {
+      mutableStateOf(false)
+  }
 
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(modifier = Modifier.fillMaxSize()) {
             Spacer(modifier = Modifier.height(10.dp))
             MySearchBar(value = searchViewModel.searchQuery.value) {
+                loading.value = true
                 searchViewModel.searchQuery.value = it
                 //call api
                 searchViewModel.searchMovie(searchViewModel.searchQuery.value)
 
             }
             val searchMovieList = searchViewModel.searchMovieList.collectAsState()
+            val error = searchViewModel.apiError.collectAsState()
 
-            LazyColumn {
-                items(searchMovieList.value, key = {movie ->
-                    movie.id!!
-                }){
-                    MovieItems(movie = it, onItemClick ={
-                        navHostController.navigate("${ScreenRoute.Detail.name}/${it.id}")
-                    })
+            if (searchMovieList.value.isNotEmpty() && error.value.isEmpty()){
+                loading.value = false
+                LazyColumn {
+                    items(searchMovieList.value, key = {movie ->
+                        movie.id!!
+                    }){
+                        MovieItems(movie = it, onItemClick ={
+                            navHostController.navigate("${ScreenRoute.Detail.name}/${it.id}")
+                        })
+                    }
                 }
+            }else if(loading.value && searchViewModel.searchQuery.value.isNotEmpty()){
+                Loading()
+            }else if (error.value.isEmpty()){
+               com.github.ebrahimi16153.topmovies.util.Error(value = error.value)
             }
+
         }
 
 
@@ -66,7 +82,9 @@ fun MySearchBar(
     onValueChange: (String) -> Unit
 ) {
     OutlinedTextField(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp),
         value = value,
         onValueChange ={
                        onValueChange(it)

@@ -99,5 +99,9 @@ dependencies {
     //coil
     implementation(libs.coil.compose)
 
+    // lotteFile
+    implementation(libs.lottie.compose)
+
+
 
 }
