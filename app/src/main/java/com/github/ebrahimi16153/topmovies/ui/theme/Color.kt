@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 
 
 
-val chineseBlack  = Color(0xFF0e0f14)
+    val chineseBlack  = Color(0xFF0e0f14)
 val chineseBlackAlpha  = Color(0xC80E0F14)
 val scarlet  = Color(0xFFf81633)
 val raisinBlack  = Color(0xFF1d1d27)
