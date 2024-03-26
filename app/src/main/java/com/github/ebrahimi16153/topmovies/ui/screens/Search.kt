@@ -19,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.github.ebrahimi16153.topmovies.navigation.ScreenRoute
 import com.github.ebrahimi16153.topmovies.util.Loading
@@ -27,7 +28,7 @@ import com.github.ebrahimi16153.topmovies.viewModel.SearchViewModel
 
 
 @Composable
-fun Search(navHostController: NavHostController, searchViewModel: SearchViewModel) {
+fun Search(navHostController: NavHostController, searchViewModel: SearchViewModel = hiltViewModel()) {
 
   val loading = remember {
       mutableStateOf(false)

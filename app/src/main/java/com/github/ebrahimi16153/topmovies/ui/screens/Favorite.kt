@@ -17,7 +17,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.DateRange
-import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.Place
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Icon
@@ -34,6 +33,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.github.ebrahimi16153.topmovies.models.FavoriteMovie
@@ -42,7 +42,7 @@ import com.github.ebrahimi16153.topmovies.util.EmptyContent
 import com.github.ebrahimi16153.topmovies.viewModel.FavViewModel
 
 @Composable
-fun Favorite(navHostController: NavHostController, favViewModel: FavViewModel) {
+fun Favorite(navHostController: NavHostController, favViewModel: FavViewModel = hiltViewModel()) {
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
 
         // call database
@@ -58,7 +58,7 @@ fun Favorite(navHostController: NavHostController, favViewModel: FavViewModel) {
         ) {
 
             if (movieList.value.isEmpty()) {
-               FavEmpty(massage = "First add Some movie to Favorite")
+               FavEmpty()
             } else {
                 FavContent(movieList, navHostController)
             }
@@ -86,13 +86,13 @@ private fun FavContent(
 }
 
 @Composable
-private fun FavEmpty(massage: String) {
+private fun FavEmpty() {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        EmptyContent(label = massage)
+        EmptyContent(label = "First add Some movie to Favorite")
     }
 }
 

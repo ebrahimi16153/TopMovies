@@ -40,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -57,7 +58,7 @@ import com.github.ebrahimi16153.topmovies.viewModel.HomeViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Home(navHostController: NavHostController, homeViewModel: HomeViewModel) {
+fun Home(navHostController: NavHostController, homeViewModel: HomeViewModel = hiltViewModel()) {
 
     // call api
     homeViewModel.getMainBannerMovieList(3)
@@ -80,7 +81,7 @@ fun Home(navHostController: NavHostController, homeViewModel: HomeViewModel) {
         if (error.value.isEmpty()) {
 
             // check list is ready or not
-            if (mainBannerList.value.isEmpty() && lastMovieList.itemCount > 0) {
+            if (mainBannerList.value.isEmpty() ) {
 
                 //  if list is not ready show a loading
                 Loading()

@@ -20,7 +20,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Info
@@ -44,6 +43,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.github.ebrahimi16153.topmovies.models.FavoriteMovie
@@ -55,7 +55,7 @@ import com.github.ebrahimi16153.topmovies.viewModel.DetailViewModel
 import kotlinx.coroutines.flow.update
 
 @Composable
-fun Detail(navHostController: NavHostController, movieId: Int, detailViewModel: DetailViewModel) {
+fun Detail(navHostController: NavHostController, movieId: Int, detailViewModel: DetailViewModel = hiltViewModel()) {
 
     LaunchedEffect(key1 = movieId) {
         detailViewModel.getDetailMovie(movieId)

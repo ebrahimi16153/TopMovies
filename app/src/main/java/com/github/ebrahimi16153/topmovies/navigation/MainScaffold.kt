@@ -28,18 +28,11 @@ import com.github.ebrahimi16153.topmovies.ui.screens.Home
 import com.github.ebrahimi16153.topmovies.ui.screens.Search
 import com.github.ebrahimi16153.topmovies.ui.screens.Splash
 import com.github.ebrahimi16153.topmovies.util.Constant
-import com.github.ebrahimi16153.topmovies.viewModel.DetailViewModel
-import com.github.ebrahimi16153.topmovies.viewModel.FavViewModel
-import com.github.ebrahimi16153.topmovies.viewModel.HomeViewModel
-import com.github.ebrahimi16153.topmovies.viewModel.SearchViewModel
+
 
 @Composable
 fun MainScaffold(
     navController: NavHostController,
-    homeViewModel: HomeViewModel,
-    searchViewModel: SearchViewModel,
-    favViewModel: FavViewModel,
-    detailViewModel: DetailViewModel
 ) {
 
     val navBarVisibility = remember {
@@ -91,17 +84,17 @@ fun MainScaffold(
 
                 //  home
                 composable(ScreenRoute.Home.name) {
-                    Home(navHostController = navController, homeViewModel = homeViewModel)
+                    Home(navHostController = navController)
                 }
 
                 // search
                 composable(ScreenRoute.Search.name) {
-                    Search(navHostController = navController, searchViewModel = searchViewModel)
+                    Search(navHostController = navController)
                 }
 
                 //favorite
                 composable(ScreenRoute.Favorite.name) {
-                    Favorite(navHostController = navController, favViewModel = favViewModel)
+                    Favorite(navHostController = navController)
                 }
 
                 // Detail
@@ -112,7 +105,7 @@ fun MainScaffold(
 
                     val movieId = navBackStackEntry.arguments?.getInt(Constant.DETAIL_ARGUMENT_KEY)?: 0
 
-                    Detail(navHostController = navController, movieId = movieId , detailViewModel = detailViewModel)
+                    Detail(navHostController = navController, movieId = movieId)
 
                 }
 

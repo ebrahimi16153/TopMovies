@@ -20,7 +20,7 @@ import com.github.ebrahimi16153.topmovies.navigation.ScreenRoute
 import kotlinx.coroutines.delay
 
 @Composable
-fun Splash(navHostController: NavHostController){
+fun Splash(navHostController: NavHostController ){
 
     Box(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.background),contentAlignment = Alignment.Center){
 
