@@ -12,11 +12,6 @@ interface ApiServices {
     @GET("genres/{genre_id}/movies")
     suspend fun getMainBannerMovieList(@Path("genre_id") id: Int): ResponseOfMainBannerMovie
 
-    //second way without Flow
-//    @GET("genres/{genre_id}/movies")
-//     suspend fun getMainBannerMovieList(@Path("genre_id") id: Int):ResponseOfMainBannerMovie
-
-
     @GET("movies")
     suspend fun getLastMovieList(@Query("page") page:Int):ResponseOfMovieList
 

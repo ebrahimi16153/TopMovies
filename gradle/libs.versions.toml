@@ -1,27 +1,29 @@
 [versions]
-agp = "8.3.0"
+agp = "8.3.1"
 coilCompose = "2.6.0"
 converterGson = "2.9.0"
 gson = "2.10.1"
-hiltAndroid = "2.48"
-kotlin = "1.9.0"
+hiltAndroid = "2.49"
+kotlin = "1.9.23"
 coreKtx = "1.12.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.7.0"
 activityCompose = "1.8.2"
-composeBom = "2023.08.00"
+composeBom = "2024.03.00"
 loggingInterceptor = "4.7.2"
 lottieCompose = "6.0.0"
 navigationCompose = "2.7.7"
 okhttp = "4.12.0"
+pagingCompose = "3.2.1"
 retrofit = "2.9.0"
 roomRuntime = "2.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingCompose" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }

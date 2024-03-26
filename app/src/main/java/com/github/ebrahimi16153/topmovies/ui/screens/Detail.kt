@@ -19,6 +19,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material.icons.rounded.Favorite
@@ -157,7 +158,7 @@ private fun DetailContent(
                     ) {
                         //Back
                         OutlinedIconButton(onClick = { onBackClick() }) {
-                            Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = "")
+                            Icon(imageVector = Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "")
                         }
 
                         //Fav

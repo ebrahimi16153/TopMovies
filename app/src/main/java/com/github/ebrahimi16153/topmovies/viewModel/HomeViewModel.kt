@@ -2,6 +2,8 @@ package com.github.ebrahimi16153.topmovies.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.github.ebrahimi16153.topmovies.models.ResponseOfMainBannerMovie
 import com.github.ebrahimi16153.topmovies.models.ResponseOfMovieList
 import com.github.ebrahimi16153.topmovies.models.Result
@@ -55,28 +57,15 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
 
 
     // lastMovie
-    private val _lastMovieList = MutableStateFlow<List<ResponseOfMovieList.Data>>(emptyList())
-    val lastMovieList: StateFlow<List<ResponseOfMovieList.Data>> = _lastMovieList
+    private val _lastMovieList = MutableStateFlow<PagingData<ResponseOfMovieList.Data>>(PagingData.empty())
+    val lastMovieList = _lastMovieList
 
-    fun lastMovie(page: Int) = viewModelScope.launch {
+    fun lastMovie() = viewModelScope.launch {
 
-        homeRepository.lastMovie(page).collectLatest { response ->
-
-            when (response) {
-                is Result.Error -> {
-                    _apiError.value = response.massage
-                }
-
-                is Result.Success -> {
-                    response.data?.let { responseOfLastMovieList ->
-                        _lastMovieList.update {
-                            responseOfLastMovieList.data
-                        }
-                    }
-                }
-            }
-
+        homeRepository.lastMovie().cachedIn(viewModelScope).collect{
+            _lastMovieList.value = it
         }
+
 
     }
 

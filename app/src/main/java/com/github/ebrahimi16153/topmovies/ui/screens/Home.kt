@@ -41,12 +41,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import com.github.ebrahimi16153.topmovies.models.ResponseOfMainBannerMovie
 import com.github.ebrahimi16153.topmovies.models.ResponseOfMovieList
 import com.github.ebrahimi16153.topmovies.navigation.ScreenRoute
-import com.github.ebrahimi16153.topmovies.util.Constant
 import com.github.ebrahimi16153.topmovies.util.Error
+import com.github.ebrahimi16153.topmovies.util.ItemsError
+import com.github.ebrahimi16153.topmovies.util.ItemsLoading
 import com.github.ebrahimi16153.topmovies.util.Loading
 import com.github.ebrahimi16153.topmovies.util.MovieItems
 import com.github.ebrahimi16153.topmovies.viewModel.HomeViewModel
@@ -57,10 +61,10 @@ fun Home(navHostController: NavHostController, homeViewModel: HomeViewModel) {
 
     // call api
     homeViewModel.getMainBannerMovieList(3)
-    homeViewModel.lastMovie(page = 1)
+    homeViewModel.lastMovie()
     // get MainBanner movie list
     val mainBannerList = homeViewModel.mainBannerMovieList.collectAsState()
-    val lastMovieList = homeViewModel.lastMovieList.collectAsState()
+    val lastMovieList = homeViewModel.lastMovieList.collectAsLazyPagingItems()
 
     // if api can't create response -> error massage must show to user  -> if list going wrong -> val error is fill
     val error = homeViewModel.apiError.collectAsState()
@@ -76,7 +80,7 @@ fun Home(navHostController: NavHostController, homeViewModel: HomeViewModel) {
         if (error.value.isEmpty()) {
 
             // check list is ready or not
-            if (mainBannerList.value.isEmpty() && lastMovieList.value.isEmpty()) {
+            if (mainBannerList.value.isEmpty() && lastMovieList.itemCount > 0) {
 
                 //  if list is not ready show a loading
                 Loading()
@@ -96,7 +100,7 @@ fun Home(navHostController: NavHostController, homeViewModel: HomeViewModel) {
                         list = mainBannerList
                     )
 
-                    LastMovie(lastMovies = lastMovieList.value,navController = navHostController)
+                    LastMovie(lastMovies = lastMovieList, navController = navHostController)
 
                 }
             }
@@ -110,14 +114,35 @@ fun Home(navHostController: NavHostController, homeViewModel: HomeViewModel) {
 
 
 @Composable
-fun LastMovie(lastMovies: List<ResponseOfMovieList.Data>,navController: NavHostController) {
+fun LastMovie(lastMovies: LazyPagingItems<ResponseOfMovieList.Data>, navController: NavHostController) {
 
-    lastMovies.forEach { movie ->
+    lastMovies.itemSnapshotList.forEachIndexed{index, movie ->
         Column {
-            MovieItems(movie = movie,onItemClick = {
-                navController.navigate(route = "${ScreenRoute.Detail.name}/${movie.id}")
-            })
+            lastMovies[index]?.let {
+                MovieItems(movie = it,onItemClick = {
+                    if (movie != null) {
+                        navController.navigate(route = "${ScreenRoute.Detail.name}/${movie.id}")
+                    }
+                })
+                
+            }
+
         }
+    }
+    when(val itemsState = lastMovies.loadState.append){
+        // check items Error and retry Button
+        is LoadState.Error ->{
+            itemsState.error.localizedMessage?.let {
+                ItemsError( onRetryClick = {
+                    lastMovies.retry()
+                })
+            }
+        }
+        // loading for more items
+        LoadState.Loading -> {
+            ItemsLoading()
+        }
+        is LoadState.NotLoading -> Unit
     }
 
 
@@ -264,7 +289,8 @@ fun MainBanner(
 @Composable
 private fun MainBannerIndicator(pagerState: PagerState) {
     Row(
-        Modifier.height(10.dp)
+        Modifier
+            .height(10.dp)
             .fillMaxWidth()
             .padding(bottom = 8.dp),
         horizontalArrangement = Arrangement.Center
